@@ -1,0 +1,29 @@
+{
+  "name": "project-reversi-othello-ai",
+  "version": "1.0.0",
+  "description": "AI-powered Reversi (Othello) game built with vanilla JavaScript",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 8080 -o",
+    "dev": "npx live-server --port=8080 --open=/index.html"
+  },
+  "keywords": [
+    "othello",
+    "reversi",
+    "game",
+    "javascript",
+    "ai",
+    "board-game"
+  ],
+  "author": "Trae AI",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "live-server": "^1.2.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/Project-Reversi-Othello-AI-powered-by-Trae.git"
+  },
+  "homepage": "https://your-username.github.io/Project-Reversi-Othello-AI-powered-by-Trae/"
+}

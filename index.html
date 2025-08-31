@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オセロ（リバーシ）ゲーム</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>オセロ（リバーシ）ゲーム</h1>
+        </header>
+        
+        <div class="game-info">
+            <div class="score-board">
+                <div class="player-score">
+                    <div class="player black-player">
+                        <div class="piece black"></div>
+                        <span>黒: <span id="black-score">2</span></span>
+                    </div>
+                    <div class="player white-player">
+                        <div class="piece white"></div>
+                        <span>白: <span id="white-score">2</span></span>
+                    </div>
+                </div>
+                <div class="current-turn">
+                    <span id="turn-indicator">黒のターン</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="game-board-container">
+            <div id="game-board" class="game-board"></div>
+        </div>
+        
+        <div class="game-controls">
+            <button id="reset-button" class="control-button">ゲームリセット</button>
+            <button id="pass-button" class="control-button">パス</button>
+        </div>
+        
+        <div id="game-message" class="game-message"></div>
+        
+        <div id="game-over-modal" class="modal hidden">
+            <div class="modal-content">
+                <h2>ゲーム終了</h2>
+                <p id="winner-message"></p>
+                <p id="final-score"></p>
+                <button id="new-game-button" class="control-button">新しいゲーム</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
