@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>オセロゲーム テスト</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f0f0f0;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .test-pass {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .test-fail {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .test-summary {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>オセロゲーム テストスイート</h1>
+        <button onclick="runAllTests()">全テスト実行</button>
+        <button onclick="clearResults()">結果クリア</button>
+        
+        <div id="test-results"></div>
+        <div id="test-summary"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        class OthelloTester {
+            constructor() {
+                this.testResults = [];
+            }
+
+            // テスト実行メソッド
+            runTest(testName, testFunction) {
+                try {
+                    const result = testFunction();
+                    if (result) {
+                        this.testResults.push({ name: testName, passed: true, error: null });
+                        this.displayResult(testName, true);
+                    } else {
+                        this.testResults.push({ name: testName, passed: false, error: 'Test returned false' });
+                        this.displayResult(testName, false, 'Test returned false');
+                    }
+                } catch (error) {
+                    this.testResults.push({ name: testName, passed: false, error: error.message });
+                    this.displayResult(testName, false, error.message);
+                }
+            }
+
+            // 結果表示
+            displayResult(testName, passed, error = null) {
+                const resultsDiv = document.getElementById('test-results');
+                const resultDiv = document.createElement('div');
+                resultDiv.className = `test-result ${passed ? 'test-pass' : 'test-fail'}`;
+                resultDiv.innerHTML = `
+                    <strong>${testName}</strong>: ${passed ? 'PASS' : 'FAIL'}
+                    ${error ? `<br>エラー: ${error}` : ''}
+                `;
+                resultsDiv.appendChild(resultDiv);
+            }
+
+            // サマリー表示
+            displaySummary() {
+                const summaryDiv = document.getElementById('test-summary');
+                const totalTests = this.testResults.length;
+                const passedTests = this.testResults.filter(r => r.passed).length;
+                const failedTests = totalTests - passedTests;
+                
+                summaryDiv.innerHTML = `
+                    <div class="test-summary">
+                        テスト結果: ${passedTests}/${totalTests} 成功 (${failedTests} 失敗)
+                        <br>成功率: ${Math.round((passedTests / totalTests) * 100)}%
+                    </div>
+                `;
+            }
+
+            // ボード初期化テスト
+            testBoardInitialization() {
+                const game = new OthelloGame();
+                
+                // ボードサイズチェック
+                if (game.board.length !== 8 || game.board[0].length !== 8) {
+                    return false;
+                }
+                
+                // 初期配置チェック
+                if (game.board[3][3] !== 2 || game.board[3][4] !== 1 ||
+                    game.board[4][3] !== 1 || game.board[4][4] !== 2) {
+                    return false;
+                }
+                
+                // 他のセルが空かチェック
+                let emptyCount = 0;
+                for (let i = 0; i < 8; i++) {
+                    for (let j = 0; j < 8; j++) {
+                        if (game.board[i][j] === 0) emptyCount++;
+                    }
+                }
+                
+                return emptyCount === 60; // 64 - 4 = 60
+            }
+
+            // 有効手判定テスト
+            testValidMoves() {
+                const game = new OthelloGame();
+                
+                // 初期状態での有効手
+                const validMoves = [
+                    [2, 3], [3, 2], [4, 5], [5, 4]
+                ];
+                
+                for (let move of validMoves) {
+                    if (!game.isValidMove(move[0], move[1], 1)) {
+                        return false;
+                    }
+                }
+                
+                // 無効手
+                if (game.isValidMove(0, 0, 1) || game.isValidMove(3, 3, 1)) {
+                    return false;
+                }
+                
+                return true;
+            }
+
+            // 石の配置とひっくり返しテスト
+            testMoveAndFlip() {
+                const game = new OthelloGame();
+                
+                // 初期状態を記録
+                const initialBlackCount = game.countPieces(1);
+                const initialWhiteCount = game.countPieces(2);
+                
+                // 有効手を実行
+                game.makeMove(2, 3);
+                
+                // 石が配置されたかチェック
+                if (game.board[2][3] !== 1) {
+                    return false;
+                }
+                
+                // ひっくり返しが正しく行われたかチェック
+                if (game.board[3][3] !== 1) {
+                    return false;
+                }
+                
+                // 石の数が正しく変化したかチェック
+                const newBlackCount = game.countPieces(1);
+                const newWhiteCount = game.countPieces(2);
+                
+                return newBlackCount > initialBlackCount && newWhiteCount < initialWhiteCount;
+            }
+
+            // プレイヤー切り替えテスト
+            testPlayerSwitch() {
+                const game = new OthelloGame();
+                
+                const initialPlayer = game.currentPlayer;
+                game.makeMove(2, 3);
+                
+                return game.currentPlayer !== initialPlayer;
+            }
+
+            // AI機能テスト
+            testAIFunctionality() {
+                const game = new OthelloGame();
+                game.setGameMode('pvc');
+                
+                // AI難易度設定テスト
+                game.aiDifficulty = 'easy';
+                const easyMove = game.getBestAiMove();
+                
+                game.aiDifficulty = 'hard';
+                const hardMove = game.getBestAiMove();
+                
+                // AIが有効手を返すかチェック
+                return easyMove && hardMove && 
+                       game.isValidMove(easyMove.row, easyMove.col, game.aiPlayer);
+            }
+
+            // 統計機能テスト
+            testStatistics() {
+                const game = new OthelloGame();
+                
+                // 初期統計
+                const initialStats = { ...game.stats };
+                
+                // 統計更新テスト
+                game.updateStats('win');
+                
+                return game.stats.totalGames === initialStats.totalGames + 1 &&
+                       game.stats.wins === initialStats.wins + 1;
+            }
+
+            // 全テスト実行
+            runAllTests() {
+                this.testResults = [];
+                document.getElementById('test-results').innerHTML = '';
+                document.getElementById('test-summary').innerHTML = '';
+                
+                console.log('テスト開始...');
+                
+                this.runTest('ボード初期化テスト', () => this.testBoardInitialization());
+                this.runTest('有効手判定テスト', () => this.testValidMoves());
+                this.runTest('石の配置とひっくり返しテスト', () => this.testMoveAndFlip());
+                this.runTest('プレイヤー切り替えテスト', () => this.testPlayerSwitch());
+                this.runTest('AI機能テスト', () => this.testAIFunctionality());
+                this.runTest('統計機能テスト', () => this.testStatistics());
+                
+                this.displaySummary();
+                console.log('テスト完了');
+            }
+        }
+
+        // グローバル関数
+        const tester = new OthelloTester();
+        
+        function runAllTests() {
+            tester.runAllTests();
+        }
+        
+        function clearResults() {
+            document.getElementById('test-results').innerHTML = '';
+            document.getElementById('test-summary').innerHTML = '';
+            tester.testResults = [];
+        }
+
+        // OthelloGameクラスにcountPiecesメソッドを追加（テスト用）
+        if (typeof OthelloGame !== 'undefined') {
+            OthelloGame.prototype.countPieces = function(player) {
+                let count = 0;
+                for (let i = 0; i < 8; i++) {
+                    for (let j = 0; j < 8; j++) {
+                        if (this.board[i][j] === player) {
+                            count++;
+                        }
+                    }
+                }
+                return count;
+            };
+        }
+    </script>
+</body>
+</html>

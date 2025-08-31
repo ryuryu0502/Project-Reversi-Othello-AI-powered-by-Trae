@@ -124,13 +124,56 @@ header h1 {
     background: #2980b9;
 }
 
+.cell.hint {
+    background: #fff3cd;
+    border: 3px solid #ffc107;
+    animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
 .cell-piece {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     border: 2px solid #2c3e50;
-    transition: all 0.5s ease;
-    animation: placepiece 0.5s ease;
+    transition: all 0.3s ease;
+    animation: piecePlace 0.4s ease-out;
+}
+
+.cell-piece.flipping {
+    animation: pieceFlip 0.6s ease-in-out;
+}
+
+@keyframes piecePlace {
+    0% {
+        transform: scale(0) rotate(180deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.2) rotate(90deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+@keyframes pieceFlip {
+    0% {
+        transform: rotateY(0deg);
+    }
+    50% {
+        transform: rotateY(90deg) scale(1.1);
+    }
+    100% {
+        transform: rotateY(180deg);
+    }
 }
 
 .cell-piece.black {
@@ -152,6 +195,77 @@ header h1 {
     }
 }
 
+/* ゲームモード選択 */
+.game-mode-selector {
+    text-align: center;
+    margin: 20px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.game-mode-selector h3 {
+    margin: 0 0 15px 0;
+    color: #2c3e50;
+    font-size: 1.2em;
+}
+
+.mode-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.mode-button {
+    padding: 10px 20px;
+    border: 2px solid #3498db;
+    background: white;
+    color: #3498db;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.mode-button:hover {
+    background: #3498db;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.mode-button.active {
+    background: #3498db;
+    color: white;
+}
+
+.ai-difficulty {
+    margin-top: 15px;
+}
+
+.ai-difficulty label {
+    display: inline-block;
+    margin-right: 10px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.ai-difficulty select {
+    padding: 8px 15px;
+    border: 2px solid #bdc3c7;
+    border-radius: 5px;
+    background: white;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.ai-difficulty select:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+/* ゲームコントロール */
 .game-controls {
     display: flex;
     justify-content: center;
@@ -235,6 +349,177 @@ header h1 {
     color: #555;
 }
 
+/* 音効果コントロール */
+.sound-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.sound-button {
+    background: #3498db;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.sound-button:hover {
+    background: #2980b9;
+    transform: scale(1.1);
+}
+
+.sound-button.muted {
+    background: #95a5a6;
+}
+
+.sound-button.muted:hover {
+        background: #7f8c8d;
+    }
+    
+    /* ダークテーマ */
+    body.dark-theme {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        color: #ecf0f1;
+    }
+    
+    body.dark-theme .container {
+        background: rgba(44, 62, 80, 0.9);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    
+    body.dark-theme h1 {
+        color: #ecf0f1;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    
+    body.dark-theme .score-board {
+        background: rgba(52, 73, 94, 0.8);
+        border: 2px solid #7f8c8d;
+    }
+    
+    body.dark-theme .score-item {
+        color: #ecf0f1;
+    }
+    
+    body.dark-theme .turn-indicator {
+        background: rgba(52, 73, 94, 0.8);
+        color: #ecf0f1;
+        border: 2px solid #7f8c8d;
+    }
+    
+    body.dark-theme .game-board {
+        background: #2c3e50;
+        border: 3px solid #7f8c8d;
+    }
+    
+    body.dark-theme .cell {
+        background: #34495e;
+        border: 1px solid #7f8c8d;
+    }
+    
+    body.dark-theme .cell:hover {
+        background: #4a6741;
+    }
+    
+    body.dark-theme .control-button {
+        background: #34495e;
+        color: #ecf0f1;
+        border: 2px solid #7f8c8d;
+    }
+    
+    body.dark-theme .control-button:hover {
+        background: #4a6741;
+        border-color: #95a5a6;
+    }
+    
+    body.dark-theme .game-message {
+        background: rgba(52, 73, 94, 0.9);
+        color: #ecf0f1;
+        border: 2px solid #7f8c8d;
+    }
+    
+    body.dark-theme .modal {
+        background: rgba(44, 62, 80, 0.95);
+        color: #ecf0f1;
+        border: 3px solid #7f8c8d;
+    }
+    
+    body.dark-theme .mode-button {
+        background: #34495e;
+        color: #ecf0f1;
+        border: 2px solid #7f8c8d;
+    }
+    
+    body.dark-theme .mode-button.active {
+        background: #27ae60;
+        border-color: #2ecc71;
+    }
+    
+    body.dark-theme .mode-button:hover {
+        background: #4a6741;
+    }
+    
+    body.dark-theme select {
+        background: #34495e;
+        color: #ecf0f1;
+        border: 2px solid #7f8c8d;
+    }
+    
+    /* 統計モーダル */
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+        margin: 20px 0;
+    }
+    
+    .stat-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+    
+    .stat-label {
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    
+    .stat-value {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #27ae60;
+    }
+    
+    .modal-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    body.dark-theme .stat-item {
+        background: rgba(52, 73, 94, 0.8);
+        border: 1px solid #7f8c8d;
+    }
+    
+    body.dark-theme .stat-label {
+        color: #ecf0f1;
+    }
+    
+    body.dark-theme .stat-value {
+        color: #2ecc71;
+    }
+
 @media (max-width: 600px) {
     .container {
         padding: 20px;
@@ -258,5 +543,16 @@ header h1 {
     .score-board {
         flex-direction: column;
         gap: 10px;
+    }
+    
+    .sound-controls {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .sound-button {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
     }
 }

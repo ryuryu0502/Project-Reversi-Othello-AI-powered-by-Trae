@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container" role="main">
         <header>
             <h1>オセロ（リバーシ）ゲーム</h1>
         </header>
@@ -34,9 +34,26 @@
             <div id="game-board" class="game-board"></div>
         </div>
         
+        <div class="game-mode-selector">
+            <h3>ゲームモード</h3>
+            <div class="mode-buttons">
+                <button id="pvp-mode" class="mode-button active">対人戦</button>
+                <button id="pvc-mode" class="mode-button">AI対戦</button>
+            </div>
+            <div id="ai-difficulty" class="ai-difficulty hidden">
+                <label for="difficulty-select">AI難易度:</label>
+                <select id="difficulty-select">
+                    <option value="easy">初級</option>
+                    <option value="medium">中級</option>
+                    <option value="hard">上級</option>
+                </select>
+            </div>
+        </div>
+        
         <div class="game-controls">
             <button id="reset-button" class="control-button">ゲームリセット</button>
             <button id="pass-button" class="control-button">パス</button>
+            <button id="hint-button" class="control-button">ヒント</button>
         </div>
         
         <div id="game-message" class="game-message"></div>
@@ -47,6 +64,50 @@
                 <p id="winner-message"></p>
                 <p id="final-score"></p>
                 <button id="new-game-button" class="control-button">新しいゲーム</button>
+            </div>
+        </div>
+        
+        <!-- 音効果設定 -->
+        <div class="sound-controls">
+            <button id="sound-toggle" class="sound-button" title="音効果のオン/オフ">🔊</button>
+            <button id="theme-toggle" class="sound-button" style="margin-left: 10px;">🌙</button>
+            <button id="stats-toggle" class="sound-button" style="margin-left: 10px;" title="統計表示">📊</button>
+        </div>
+        
+        <!-- 統計モーダル -->
+        <div id="stats-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <h2>ゲーム統計</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">総ゲーム数:</span>
+                        <span id="total-games" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">勝利数:</span>
+                        <span id="wins" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">敗北数:</span>
+                        <span id="losses" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">引き分け:</span>
+                        <span id="draws" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">勝率:</span>
+                        <span id="win-rate" class="stat-value">0%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">平均ゲーム時間:</span>
+                        <span id="avg-time" class="stat-value">0秒</span>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button id="reset-stats" class="control-button">統計リセット</button>
+                    <button id="close-stats" class="control-button">閉じる</button>
+                </div>
             </div>
         </div>
     </div>
