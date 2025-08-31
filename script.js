@@ -240,7 +240,7 @@ class OthelloGame {
         messageElement.textContent = message;
         setTimeout(() => {
             messageElement.textContent = '';
-        }, 3000);
+        }, 2500); // メッセージ表示時間を短縮
     }
     
     endGame() {
